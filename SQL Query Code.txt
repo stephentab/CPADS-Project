@@ -1,0 +1,61 @@
+ALTER TABLE [CPADS].[dbo].[Responses]
+ADD PRIMARY KEY (SEQID);
+
+CREATE TABLE Codebook (
+[Variable_Name] nvarchar(50),
+[Code] int,
+[Label] nvarchar(MAX),
+);
+
+BULK INSERT [CPADS].[dbo].[Codebook]
+FROM 'C:\Users\tabor\code_mappings.csv'
+WITH (FIRSTROW = 2,
+	FIELDTERMINATOR = ',',
+	ROWTERMINATOR = '\n' );
+	
+CREATE OR ALTER VIEW [dbo].[CPADS_Decoded] AS
+SELECT 
+    r.SEQID AS Case_ID,
+    r.stu04 AS Enrollment_Status_Code,
+    s.Label AS Enrollment_Status_Label,
+    r.region AS School_Region_Code,
+    reg.Label AS School_Region_Label,
+    r.age_groups AS Age_Category_Code,
+    a.Label AS Age_Category_Label,
+    r.dvdemq01 AS Gender_Code,
+    g.Label AS Gender_Label,
+    r.dvdemq6 AS Ethnicity_Code,
+    e.Label AS Ethnicity_Label,
+    r.hwbq01 AS Physical_Health_Rating_Code,
+    ph.Label AS Physical_Health_Rating_Label,
+    r.hwbq02 AS Mental_Health_Rating_Code,
+    mh.Label AS Mental_Health_Rating_Label,
+    r.alc05 AS Alcohol_Past_12M_Code,
+    alc5.Label AS Alcohol_Past_12M_Label,
+    r.alc06 AS Alcohol_30D_Frequency_Code,
+    alc6.Label AS Alcohol_30D_Frequency_Label,
+    r.alc10 AS Alcohol_30D_Drinks_Code,
+    alc10.Label AS Alcohol_30D_Drinks_Label,
+    r.can05 AS Cannabis_Past_12M_Code,
+    can5.Label AS Cannabis_Past_12M_Label,
+    r.can06 AS Cannabis_30D_Frequency_Code,
+    can6.Label AS Cannabis_30D_Frequency_Label,
+    r.dru01_f AS Hallucinogen_Ever_Used_Code,
+    hal.Label AS Hallucinogen_Ever_Used_Label,
+    r.vap01 AS Vaping_Ever_Used_Code,
+    vap.Label AS Vaping_Ever_Used_Label
+FROM [dbo].[Responses] r
+LEFT JOIN [dbo].[Codebook] s ON s.Variable_Name = 'stu04' AND r.stu04 = s.Code
+LEFT JOIN [dbo].[Codebook] reg ON reg.Variable_Name = 'region' AND r.region = reg.Code
+LEFT JOIN [dbo].[Codebook] a ON a.Variable_Name = 'age_groups' AND r.age_groups = a.Code
+LEFT JOIN [dbo].[Codebook] g ON g.Variable_Name = 'dvdemq01' AND r.dvdemq01 = g.Code
+LEFT JOIN [dbo].[Codebook] e ON e.Variable_Name = 'dvdemq6' AND r.dvdemq6 = e.Code
+LEFT JOIN [dbo].[Codebook] ph ON ph.Variable_Name = 'hwbq01' AND r.hwbq01 = ph.Code
+LEFT JOIN [dbo].[Codebook] mh ON mh.Variable_Name = 'hwbq02' AND r.hwbq02 = mh.Code
+LEFT JOIN [dbo].[Codebook] alc5 ON alc5.Variable_Name = 'alc05' AND r.alc05 = alc5.Code
+LEFT JOIN [dbo].[Codebook] alc6 ON alc6.Variable_Name = 'alc06' AND r.alc06 = alc6.Code
+LEFT JOIN [dbo].[Codebook] alc10 ON alc10.Variable_Name = 'alc10' AND r.alc10 = alc10.Code
+LEFT JOIN [dbo].[Codebook] can5 ON can5.Variable_Name = 'can05' AND r.can05 = can5.Code
+LEFT JOIN [dbo].[Codebook] can6 ON can6.Variable_Name = 'can06' AND r.can06 = can6.Code
+LEFT JOIN [dbo].[Codebook] hal ON hal.Variable_Name = 'dru01_f' AND r.dru01_f = hal.Code
+LEFT JOIN [dbo].[Codebook] vap ON vap.Variable_Name = 'vap01' AND r.vap01 = vap.Code;
