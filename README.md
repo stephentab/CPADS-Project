@@ -1,4 +1,4 @@
-# CPADS 2021-2022 Substance Use Analysis
+# Canadian Postsecondary Education Alcohol and Drug Use Analysis
 
 ## Overview
 This project analyzes the Canadian Postsecondary Alcohol and Drug Survey (CPADS) 2021-2022 Public Use Microdata File (PUMF), which contains responses from 40,931 post-secondary students across Canada on substance use, health, and demographics. The dataset with 394 variables was processed to extract key insights on alcohol, cannabis, and vaping use, segmented by demographics like gender, ethnicity, and age. The project demonstrates end-to-end data engineering and analysis skills, including data extraction, cleaning, database management, and visualization.
