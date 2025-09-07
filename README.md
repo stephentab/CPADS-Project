@@ -1,7 +1,7 @@
 # Canadian Postsecondary Education Alcohol and Drug Use Analysis
 
 ## Overview
-This project analyzes the Canadian Postsecondary Alcohol and Drug Survey (CPADS) 2021-2022 Public Use Microdata File (PUMF), which contains responses from 40,931 post-secondary students across Canada on substance use, health, and demographics. The dataset with 394 variables was processed to extract key insights on alcohol, cannabis, and vaping use, segmented by demographics like gender and age. The project demonstrates end-to-end data engineering and analysis skills, including data extraction, cleaning, database management, and visualization. The final report can be viewed [here](https://app.powerbi.com/view?r=eyJrIjoiM2RmMjQ3ZTEtZTVmOS00ZGU4LThiMTItYjkxMDRkZDMyOTE1IiwidCI6ImRmMTRiMmViLTI4MGMtNGUzZi1iMWJlLWVhMWY0NDVlNzljNiJ9).
+This project analyzes the Canadian Postsecondary Alcohol and Drug Survey (CPADS) 2021-2022 Public Use Microdata File (PUMF), which contains responses from 40,931 post-secondary students across Canada on substance use, health, and demographics. The dataset with 394 variables was processed to extract key insights on alcohol, cannabis, and vaping use, segmented by demographics like gender and age. The project demonstrates end-to-end data engineering and analysis skills, including data extraction, cleaning, database management, and visualization. The final Power BI report can be viewed [here](https://app.powerbi.com/view?r=eyJrIjoiM2RmMjQ3ZTEtZTVmOS00ZGU4LThiMTItYjkxMDRkZDMyOTE1IiwidCI6ImRmMTRiMmViLTI4MGMtNGUzZi1iMWJlLWVhMWY0NDVlNzljNiJ9).
 
 The public dataset is available on the Government of Canada Open Government site located at this [link](https://open.canada.ca/data/en/dataset/736fa9b2-62e4-4e31-aea4-51869605b363).
 
@@ -25,9 +25,6 @@ The public dataset is available on the Government of Canada Open Government site
 - SQL Server Management Studio (SSMS): Data loading, schema design, and view creation.
 - Power BI: Data cleaning, transformation, and interactive visualizations.
 
-The final output is a Power BI dashboard with visualizations to explore substance use prevalence, frequency, and correlations with mental/physical health.
-
-
 ## Preliminary Steps
 
 ### Data Acquisition
@@ -37,8 +34,8 @@ Explored dataset in Python (Pandas) to understand structure.
 
 ### Initial Data Exploration
 
-Decided to use Python (Pandas) for quick preliminary data analysis as the survey count was over 40,000 students, which could cause preformance inssues in Excel.
-The following code outputst the contents of the file in a table displaying the basic structure.
+Decided to use Python (Pandas) for quick preliminary data analysis as the survey count was over 40,000 students containing hundreds of columns, which could cause preformance issues in Excel.
+The following code outputs the contents of the file in a table displaying the basic structure.
 
 ```
 import pandas as pd
@@ -64,22 +61,23 @@ Within the responses CSV file that data would be recorded as
 
 Knowing the structure of the data, a plan can be formulated. Due to the data file only containing numbers and codes, at some point the corresponding labels from the PDF will have to be matched up to the response values. If the table from the PDF can be extracted as text in a tabular format, a lookup can then be executed. 
 
-For the purpose of this project, a SQL database will be used (Microsoft Sequel Server Management Studio) to host the data and complete the data lookups (Joining). Completing joins is much faster within SQL than the alternative option of merging within Power BI. Another benefit is that we can maintain the origional table by utilizing a view to complete the joining with only our needed columns. 
-Another alternative could be to create a STAR schema by creating seperate dimension tables for each question and connecting them via relationsips within Power BI but this could cause scaling issues if more variables were ever in need of analysis due to a new table required for each variable.
+For the purpose of this project, a locally hosted SQL database was used (Microsoft Sequel Server Management Studio) to load the data and complete the lookups (Joining). Completing joins is much faster within SQL than completing merging within a visualization tool such as Power BI. Another benefit is that we can maintain the origional table by utilizing a view to complete the joining with only our needed columns. 
+
+Another alternative that was considered was creating a STAR schema by making seperate dimension tables for each question and connecting them via relationsips within Power BI or joins in SQL. Although a normalized dataset is preferrable in most cases, this could cause scaling issues if more variables were ever in need of analysis as each variable would require creation of a completely new table.
 
 
 ### Codebook Extraction
 
-Attempted to parse the codebook PDF using standard PDF tools and Python libraries (PyPDF2), but faced formatting issues due to inconsistent PDF headings. With the data available but needing to be reformatted, this is was a perfect use case to utilize AI to reformat the existing data.
-Used Gemini (LLM) and generated a prompt to reformat variable names, codes, and labels into a structured table format that could be exported into a CSV format (code_mappings.csv) for use as a lookup table.
+Extraction of the codebook PDF was attempted using standard PDF tools and Python libraries (PyPDF2), but faced formatting issues due to inconsistent PDF headings. With the data available for use but needing to be reformatted, this is was a perfect use case to utilize AI.
+The PDF was loaded into Gemini (LLM) and a prompt was written to reformat variable names, codes, and labels into a structured table format that could be exported into a CSV format (code_mappings.csv) for use as a lookup table.
 
 
 ### Database Setup in SSMS
 
-Loaded the survey data into SQL Server Management Studio (SSMS) using the management interface.
-Created [dbo].[Responses] table, altering default TINYINT columns to INT to handle high codes.
+The survey data (CSV) was loaded into SQL Server Management Studio (SSMS) using the management interface.
+Created [dbo].[Responses] table, altering default TINYINT columns to INT to handle high codes and formatting weight values as decimals.
 
-Added a primary key on SEQID
+Added a primary key on Sequence ID column (SEQID)
 
 ```
 ALTER TABLE [CPADS].[dbo].[Responses]
@@ -165,10 +163,10 @@ LEFT JOIN [dbo].[Codebook] vap ON vap.Variable_Name = 'vap01' AND r.vap01 = vap.
 
 ### Power BI Integration
 
-Connected to SQL database in Power BI using Import mode.
-In Power Query Editor (PQE), filtered Enrollment_Status_Label to include only "Full-Time" and "Part-Time" students.
-Performed data cleaning in PQE to remove unnecessary characters (quotations, commas) from label columns.
-Since these transformations are all native to SQL the query can be folded back to the server and will not be run inside Power BI, increasing efficiency.
+Connected to SQL database in Power BI using Import mode for faster loading with no need for live data in this project.
+In Power Query Editor (PQE), filtered Enrollment_Status to include only "Full-Time" and "Part-Time" students.
+Performed data cleaning in PQE to remove unnecessary characters (quotations, commas) from string columns.
+Since these transformations are native to SQL, the query can be folded back to the server and will not be run inside Power BI, increasing efficiency.
 
 
 ## Visualization
