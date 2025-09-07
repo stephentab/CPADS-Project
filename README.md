@@ -7,16 +7,16 @@ The public dataset is available on the Government of Canada Open Government site
 
 ## Table of Contents
 - [Overview](#overview)
-- Key technologies used
-- Preliminary Steps
-    - Data Aquisition
-    - Initial Data Exploration
-- Extraction, Transformation and Loading (ETL)
-    - Codebook Extraction
-    - Database Setup in SSMS
-    - Variable Selection
-    - SQL View Creation
-    - Power BI Integration
+- [Key technologies used](#key-technologies-used)
+- [Preliminary Steps](#preliminary-steps)
+    - [Data Aquisition](#data-aquisition)
+    - [Initial Data Exploration](#initial-data-exploration)
+- [Extraction, Transformation and Loading](#extraction,-transformation-and-loading)
+    - [Codebook Extraction](#codebook-extraction)
+    - [Database Setup in SSMS](#database-setup-in-ssms)
+    - [Variable Selection](#variable-selection)
+    - [SQL View Creation](#sql-view-creation)
+    - [Power BI Integration](#power-bi-integration)
 - [Visualization](#visualization)
 
 ## Key technologies used
