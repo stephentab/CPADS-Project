@@ -2,21 +2,22 @@
 
 ## Overview
 This project analyzes the Canadian Postsecondary Alcohol and Drug Survey (CPADS) 2021-2022 Public Use Microdata File (PUMF), which contains responses from 40,931 post-secondary students across Canada on substance use, health, and demographics. The dataset with 394 variables was processed to extract key insights on alcohol, cannabis, and vaping use, segmented by demographics like gender and age. The project demonstrates end-to-end data engineering and analysis skills, including data extraction, cleaning, database management, and visualization. The final report can be viewed [here](https://app.powerbi.com/view?r=eyJrIjoiM2RmMjQ3ZTEtZTVmOS00ZGU4LThiMTItYjkxMDRkZDMyOTE1IiwidCI6ImRmMTRiMmViLTI4MGMtNGUzZi1iMWJlLWVhMWY0NDVlNzljNiJ9).
+
 The public dataset is available on the Government of Canada Open Government site located at this [link](https://open.canada.ca/data/en/dataset/736fa9b2-62e4-4e31-aea4-51869605b363).
 
 ## Table of Contents
--Overview
--Key technologies used
--Preliminary Steps
-    -Data Aquisition
-    -Initial Data Exploration
--Extraction, Transformation and Loading (ETL)
-    -Codebook Extraction
-    -Database Setup in SSMS
-    -Variable Selection
-    -SQL View Creation
-    -Power BI Integration
--Visualization
+- [Overview](##overview)
+- Key technologies used
+- Preliminary Steps
+    - Data Aquisition
+    - Initial Data Exploration
+- Extraction, Transformation and Loading (ETL)
+    - Codebook Extraction
+    - Database Setup in SSMS
+    - Variable Selection
+    - SQL View Creation
+    - Power BI Integration
+- Visualization
 
 ## Key technologies used
 
