@@ -1,7 +1,7 @@
 # Canadian Postsecondary Education Alcohol and Drug Use Analysis
 
 ## Overview
-This project analyzes the Canadian Postsecondary Alcohol and Drug Survey (CPADS) 2021-2022 Public Use Microdata File (PUMF), which contains responses from 40,931 post-secondary students across Canada on substance use, health, and demographics. The dataset with 394 variables was processed to extract key insights on alcohol, cannabis, and vaping use, segmented by demographics like gender, ethnicity, and age. The project demonstrates end-to-end data engineering and analysis skills, including data extraction, cleaning, database management, and visualization.
+This project analyzes the Canadian Postsecondary Alcohol and Drug Survey (CPADS) 2021-2022 Public Use Microdata File (PUMF), which contains responses from 40,931 post-secondary students across Canada on substance use, health, and demographics. The dataset with 394 variables was processed to extract key insights on alcohol, cannabis, and vaping use, segmented by demographics like gender, ethnicity, and age. The project demonstrates end-to-end data engineering and analysis skills, including data extraction, cleaning, database management, and visualization. The final report can be viewed [here](https://app.powerbi.com/view?r=eyJrIjoiM2RmMjQ3ZTEtZTVmOS00ZGU4LThiMTItYjkxMDRkZDMyOTE1IiwidCI6ImRmMTRiMmViLTI4MGMtNGUzZi1iMWJlLWVhMWY0NDVlNzljNiJ9).
 
 ### Key technologies used:
 
@@ -151,28 +151,34 @@ LEFT JOIN [dbo].[Codebook] vap ON vap.Variable_Name = 'vap01' AND r.vap01 = vap.
 
 Connected to SQL database in Power BI using Import mode.
 In Power Query Editor (PQE), filtered Enrollment_Status_Label to include only "Full-Time" and "Part-Time" students.
-Performed data cleaning in PQE to remove unnecessary characters (e.g., quotations, commas) from label columns.
+Performed data cleaning in PQE to remove unnecessary characters (quotations, commas) from label columns.
 Since these transformations are all native to SQL the query can be folded back to the server and will not be run inside Power BI, increasing efficiency.
 
 
 ## Visualizations
 
-Created exploratory visualizations in Power BI to analyze substance use patterns:
-Bar Chart: Prevalence of alcohol, cannabis, hallucinogen, and vaping use by gender, using measures:
+Created exploratory visualizations in Power BI to analyze substance use patterns.
+
+Measures for percentage of indivuduals reporting usage of Alcohol and Cannabis in the past 12 months.
 
 ```
-Pct_Alcohol_Past_12M = 
+Pct_Alcohol 12 Months = 
 DIVIDE(
-    CALCULATE(COUNT('CPADS_Decoded'[Case_ID]), 'CPADS_Decoded'[Alcohol_Past_12M_Label] = "Yes"),
-    COUNT('CPADS_Decoded'[Case_ID]),
+    CALCULATE(SUM('CPADS_Decoded'[Weight_Values]), 'CPADS_Decoded'[Alcohol_Past_12M] = "Yes"),
+    SUM('CPADS_Decoded'[Weight_Values]),
     0
 ) * 100
 ```
 
+```
+Pct_Cannabis 12 Months = 
+DIVIDE(
+    CALCULATE(SUM('CPADS_Decoded'[Weight_Values]), 'CPADS_Decoded'[Cannabis_Past_12M] = "Yes"),
+    SUM('CPADS_Decoded'[Weight_Values]),
+    0
+) * 100
+```
 
-Pie Chart: Vaping prevalence by age category, highlighting trends in younger students.
-Heatmap (Table): Substance use by ethnicity and physical health, using conditional formatting to highlight high-use groups.
-
-
+Full interactive report can be viewed [here](https://app.powerbi.com/view?r=eyJrIjoiM2RmMjQ3ZTEtZTVmOS00ZGU4LThiMTItYjkxMDRkZDMyOTE1IiwidCI6ImRmMTRiMmViLTI4MGMtNGUzZi1iMWJlLWVhMWY0NDVlNzljNiJ9) or the Power BI pbix file can be downloaded from this repository.
 
 
