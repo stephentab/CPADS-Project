@@ -6,7 +6,7 @@ This project analyzes the Canadian Postsecondary Alcohol and Drug Survey (CPADS)
 The public dataset is available on the Government of Canada Open Government site located at this [link](https://open.canada.ca/data/en/dataset/736fa9b2-62e4-4e31-aea4-51869605b363).
 
 ## Table of Contents
-- [Overview](##overview)
+- [Overview](#overview)
 - Key technologies used
 - Preliminary Steps
     - Data Aquisition
@@ -17,7 +17,7 @@ The public dataset is available on the Government of Canada Open Government site
     - Variable Selection
     - SQL View Creation
     - Power BI Integration
-- [Visualization](##visualization)
+- [Visualization](#visualization)
 
 ## Key technologies used
 
