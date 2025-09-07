@@ -1,9 +1,24 @@
 # Canadian Postsecondary Education Alcohol and Drug Use Analysis
 
 ## Overview
-This project analyzes the Canadian Postsecondary Alcohol and Drug Survey (CPADS) 2021-2022 Public Use Microdata File (PUMF), which contains responses from 40,931 post-secondary students across Canada on substance use, health, and demographics. The dataset with 394 variables was processed to extract key insights on alcohol, cannabis, and vaping use, segmented by demographics like gender, ethnicity, and age. The project demonstrates end-to-end data engineering and analysis skills, including data extraction, cleaning, database management, and visualization. The final report can be viewed [here](https://app.powerbi.com/view?r=eyJrIjoiM2RmMjQ3ZTEtZTVmOS00ZGU4LThiMTItYjkxMDRkZDMyOTE1IiwidCI6ImRmMTRiMmViLTI4MGMtNGUzZi1iMWJlLWVhMWY0NDVlNzljNiJ9).
+This project analyzes the Canadian Postsecondary Alcohol and Drug Survey (CPADS) 2021-2022 Public Use Microdata File (PUMF), which contains responses from 40,931 post-secondary students across Canada on substance use, health, and demographics. The dataset with 394 variables was processed to extract key insights on alcohol, cannabis, and vaping use, segmented by demographics like gender and age. The project demonstrates end-to-end data engineering and analysis skills, including data extraction, cleaning, database management, and visualization. The final report can be viewed [here](https://app.powerbi.com/view?r=eyJrIjoiM2RmMjQ3ZTEtZTVmOS00ZGU4LThiMTItYjkxMDRkZDMyOTE1IiwidCI6ImRmMTRiMmViLTI4MGMtNGUzZi1iMWJlLWVhMWY0NDVlNzljNiJ9).
+The public dataset is available on the Government of Canada Open Government site located at this [link](https://open.canada.ca/data/en/dataset/736fa9b2-62e4-4e31-aea4-51869605b363).
 
-### Key technologies used:
+## Table of Contents
+-Overview
+-Key technologies used
+-Preliminary Steps
+    -Data Aquisition
+    -Initial Data Exploration
+-Extraction, Transformation and Loading (ETL)
+    -Codebook Extraction
+    -Database Setup in SSMS
+    -Variable Selection
+    -SQL View Creation
+    -Power BI Integration
+-Visualization
+
+## Key technologies used
 
 - Python: Initial data exploration and PDF parsing attempts.
 - SQL Server Management Studio (SSMS): Data loading, schema design, and view creation.
@@ -12,14 +27,14 @@ This project analyzes the Canadian Postsecondary Alcohol and Drug Survey (CPADS)
 The final output is a Power BI dashboard with visualizations to explore substance use prevalence, frequency, and correlations with mental/physical health.
 
 
-## Steps
+## Preliminary Steps
 
 ### Data Acquisition
 
 Obtained the CPADS 2021-2022 PUMF dataset (CSV) and accompanying explanatory guide and codebook (PDF) containing variable labels and codes.
 Explored dataset in Python (Pandas) to understand structure. 
 
-### Data Exploration
+### Initial Data Exploration
 
 Decided to use Python (Pandas) for quick preliminary data analysis as the survey count was over 40,000 students, which could cause preformance inssues in Excel.
 The following code outputst the contents of the file in a table displaying the basic structure.
@@ -44,7 +59,7 @@ Within the responses CSV file that data would be recorded as
 | 1  |
 | ... |
 
-## Analysis Plan
+## Extraction, Tranformation and Loading (ETL)
 
 Knowing the structure of the data, a plan can be formulated. Due to the data file only containing numbers and codes, at some point the corresponding labels from the PDF will have to be matched up to the response values. If the table from the PDF can be extracted as text in a tabular format, a lookup can then be executed. 
 
@@ -109,7 +124,7 @@ Selected 15 key variables for analysis, focusing on demographics, health, and su
 15. vap01: Vaping frequency.
 
 
-### SQL View Creation:
+### SQL View Creation
 
 To join up the labels with the raw data, created [dbo].[CPADS_Decoded] view to join [dbo].[Responses] with [dbo].[Codebook], decoding codes into readable labels (e.g., stu04 → Enrollment_Status_Code)
 
@@ -147,7 +162,7 @@ LEFT JOIN [dbo].[Codebook] can6 ON can6.Variable_Name = 'can06' AND r.can06 = ca
 LEFT JOIN [dbo].[Codebook] vap ON vap.Variable_Name = 'vap01' AND r.vap01 = vap.Code;
 ```
 
-## Power BI Integration:
+### Power BI Integration
 
 Connected to SQL database in Power BI using Import mode.
 In Power Query Editor (PQE), filtered Enrollment_Status_Label to include only "Full-Time" and "Part-Time" students.
@@ -155,11 +170,11 @@ Performed data cleaning in PQE to remove unnecessary characters (quotations, com
 Since these transformations are all native to SQL the query can be folded back to the server and will not be run inside Power BI, increasing efficiency.
 
 
-## Visualizations
+## Visualization
 
-Created exploratory visualizations in Power BI to analyze substance use patterns.
+Created exploratory visualizations in Power BI to display trends and pull insights from data. Generated an interactive report including slicers and navigatable pages.
 
-Measures for percentage of indivuduals reporting usage of Alcohol and Cannabis in the past 12 months.
+DAX measures for percentage of indivuduals reporting usage of Alcohol and Cannabis in the past 12 months.
 
 ```
 Pct_Alcohol 12 Months = 
