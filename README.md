@@ -17,7 +17,7 @@ The public dataset is available on the Government of Canada Open Government site
     - Variable Selection
     - SQL View Creation
     - Power BI Integration
-- Visualization
+- [Visualization](##visualization)
 
 ## Key technologies used
 
